@@ -1,0 +1,10 @@
+flask
+joblib
+matplotlib
+numpy
+opencv-python
+pillow
+scikit-learn
+scipy
+tensorflow
+tk
