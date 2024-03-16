@@ -100,11 +100,4 @@ def send_file(filename):
 
 
 if __name__ == "__main__":
-    app.debug = True
-    app.run(debug=True)
-    app.debug = True
-from keras.models import model_from_json
-import os
-import glob
-import time
-import cv2
+    app.run(host="0.0.0.0",port=5000,debug=True)
