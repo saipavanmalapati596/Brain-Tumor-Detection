@@ -1,8 +1,5 @@
 # Use an official Python runtime as a parent image
-FROM ubuntu
-RUN apt update
-RUN apt install python3-pip -y
-
+FROM python:3.8-slim
 
 # Set the working directory in the container
 WORKDIR /app
@@ -15,7 +12,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Make port 5000 available to the world outside this container
 EXPOSE 5000
-ENTRYPOINT ["python3"]
+
 
 # Run app.py when the container launches
-CMD ["app1.py","runserver","0.0.0.0:5000"]
+CMD ["python3","-m","flask","run",  "0.0.0.0:5000"]
