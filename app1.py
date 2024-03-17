@@ -1,11 +1,11 @@
+import matplotlib
+matplotlib.use('Agg')  # Use the 'Agg' backend which does not require GUI libraries
+
 import cv2
-import matplotlib.pyplot as plt
 import numpy as np
 from keras.preprocessing import image
-from keras.models import Sequential
-from keras.layers import Dense
-import os
 from keras.models import model_from_json
+import os
 import tensorflow as tf
 from flask import Flask, render_template, request, send_from_directory
 
@@ -20,7 +20,6 @@ json_file.close()
 cnn_model = model_from_json(loaded_model_json)
 # load weights into new model
 cnn_model.load_weights("model_vgg.h5")
-# Load model
 
 IMAGE_SIZE = 150
 
@@ -42,13 +41,10 @@ def load_and_preprocess_image(path):
 
 # Predict & classify image
 def classify(model, image_path):
+    preprocessed_image = load_and_preprocess_image(image_path)
+    preprocessed_image = tf.reshape(preprocessed_image, (1, IMAGE_SIZE, IMAGE_SIZE, 3))
 
-    preprocessed_imgage = load_and_preprocess_image(image_path)
-    preprocessed_imgage = tf.reshape(
-        preprocessed_imgage, (1, IMAGE_SIZE, IMAGE_SIZE, 3)
-    )
-
-    prob = cnn_model.predict(preprocessed_imgage)
+    prob = cnn_model.predict(preprocessed_image)
     label = "Brain tumor" if prob[0][0] >= 0.5 else "Normal"
     classified_prob = prob[0][0] if prob[0][0] >= 0.5 else 1 - prob[0][0]
 
@@ -63,10 +59,8 @@ def home():
 
 @app.route("/classify", methods=["POST", "GET"])
 def upload_file():
-
     if request.method == "GET":
         return render_template("home.html")
-
     else:
         file = request.files["image"]
         upload_image_path = os.path.join(UPLOAD_FOLDER, file.filename)
@@ -88,4 +82,4 @@ def send_file(filename):
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0",port=5000,debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True)
