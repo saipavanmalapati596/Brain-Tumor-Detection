@@ -11,9 +11,9 @@ COPY . /app
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Make port 5000 available to the world outside this container
-EXPOSE 5000
+EXPOSE 8080
 
 ENV NAME world
 
 # Run app.py when the container launches
-CMD ["python3","-m","flask","run",  "0.0.0.0:5000"]
+CMD ["python3","-m","flask","run",  "0.0.0.0:8080"]
